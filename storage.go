@@ -78,7 +78,11 @@ func (s *PostgresStore) UpdateAccount(*Account) error {
 	return nil
 }
 
-func (s *PostgresStore) DeleteAccount(int) error {
+func (s *PostgresStore) DeleteAccount(id int) error {
+	_, err := s.db.Query("DELETE FROM account WHERE ID = $1", id)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -90,7 +94,7 @@ func (s *PostgresStore) GetAccountByID(id int) (*Account, error) {
 	for rows.Next() {
 		return scanIntoAccount(rows)
 	}
-	return nil, fmt.Errorf("Account %d not found", id)
+	return nil, fmt.Errorf("account %d not found", id)
 }
 
 func (s *PostgresStore) GetAccounts() ([]*Account, error) {
