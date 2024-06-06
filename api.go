@@ -62,7 +62,12 @@ func (s *APIServer) handleLogin(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	return WriteJSON(w, http.StatusOK, map[string]string{"token": token})
+	res := LoginResponse{
+		Token:  token,
+		Number: acc.Number,
+	}
+
+	return WriteJSON(w, http.StatusOK, res)
 }
 
 func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error {
